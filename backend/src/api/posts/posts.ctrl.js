@@ -2,9 +2,6 @@ const Post = require('models/post');
 const { ObjectId } = require('mongoose').Types;
 
 const Joi = require('joi');
-
-let postId = 1; // id의 초기값 입니다
-
 const posts = [
   {
     id: 1,
@@ -124,6 +121,11 @@ exports.list = async (ctx) => {
   // page 가 주어지지 않았다면 1로 간주
   // query 는 문자열 형태로 받아오므로 숫자로 변환
   const page = parseInt(ctx.query.page || 1, 10);
+  const { tag } = ctx.query;
+
+  const query = tag ? {
+    tags: tag // tags 배열에 tag 를 가진 포스트 찾기
+  } : {};
 
   // 잘못된 페이지가 주어졌다면 에러
   if (page < 1) {
@@ -132,7 +134,7 @@ exports.list = async (ctx) => {
   }
 
   try {
-    const posts = await Post.find()
+    const posts = await Post.find(query)
       .sort({ _id: -1 })
       .limit(10)
       .skip((page - 1) * 10)
@@ -140,10 +142,18 @@ exports.list = async (ctx) => {
 
     // 마지막 페이지 알려주기
     // ctx.set 은 response header 를 설정해줍니다.
-    const postCount = await Post.count().exec();
+    const postCount = await Post.count(query).exec();
     ctx.set('Last-Page', Math.ceil(postCount / 10));
     ctx.body = posts;
   } catch (e) {
     ctx.throw(e, 500);
   }
+};
+
+exports.checkLogin = (ctx, next) => {
+  if (!ctx.session.logged) {
+    ctx.status = 401; // Unauthorized
+    return null;
+  }
+  return next();
 };

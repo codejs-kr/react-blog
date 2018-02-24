@@ -6,5 +6,9 @@
   "databaseServer": {
   	"host": "localhost",
     "port": 27017
-  }
+  },
+	"admin": {
+		"ADMIN_PASS": "react123",
+		"COOKIE_SIGN_KEY": "C00KiE$1GNK3Y"
+	}
 }

@@ -15,6 +15,7 @@
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.3.0",
+    "koa-session": "^5.8.1",
     "mongodb": "^2.2.19",
     "mongoose": "^4.4",
     "mongoose-pagination": "^1.0.0"
