@@ -1,0 +1,10 @@
+{
+	"webServer": {
+		"host": "localhost",
+		"port": 4000
+	},
+  "databaseServer": {
+  	"host": "localhost",
+    "port": 27017
+  }
+}
